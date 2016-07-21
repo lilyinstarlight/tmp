@@ -3,6 +3,7 @@ from distutils.core import setup
 
 from tmp import name, version
 
+
 setup(
     name=name,
     version=version,
