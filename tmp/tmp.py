@@ -21,7 +21,7 @@ def get(alias):
         raise KeyError()
 
     # get metadata
-    download = {'type': response.getheader('Content-Type'), 'filename': response.getheader('Content-Filename'), 'mtime': response.getheader('Last-Modified'), 'expire': response.getheader('Expires')}
+    download = {'size': response.getheader('Content-Length'), 'type': response.getheader('Content-Type'), 'filename': response.getheader('Content-Filename'), 'mtime': response.getheader('Last-Modified'), 'expire': response.getheader('Expires')}
 
     # store a file-like object
     download['file'] = response

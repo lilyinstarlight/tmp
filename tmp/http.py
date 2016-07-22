@@ -54,6 +54,7 @@ class File(web.HTTPHandler):
             raise web.HTTPError(404)
 
         # set headers
+        self.response.headers['Content-Length'] = download['size']
         self.response.headers['Content-Type'] = download['type']
         self.response.headers['Content-Disposition'] = 'attachment; filename="' + download['filename'] + '"'
         self.response.headers['Last-Modified'] = download['mtime']
