@@ -2,8 +2,34 @@
 <html>
 	<head>
 		<title>tmp</title>
+
+		<style>
+			label {{
+				text-align: right;
+			}}
+		</style>
 	</head>
 
 	<body>
+		<main>
+			<p>{message}</p>
+
+			<form method="POST" enctype="multipart/form-data">
+				<table>
+					<tr>
+						<td><label for="alias">Alias:</label></td>
+						<td><input id="alias" name="alias" type="text"/></td>
+					</tr>
+					<tr>
+						<td><label for="file">File:</label></td>
+						<td><input id="file" name="file" type="file"/></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><input type="submit" value="Submit"/></td>
+					</tr>
+				</table>
+			</form>
+		</main>
 	</body>
 </html>

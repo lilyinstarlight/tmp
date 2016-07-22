@@ -1,19 +1,17 @@
 import signal
 
-from store import name, version
-from store import log, http, pruner
+from tmp import name, version
+from tmp import log, http
 
 
-log.storelog.info(name + ' ' + version + ' starting...')
+log.tmplog.info(name + ' ' + version + ' starting...')
 
 # start everything
 http.start()
-pruner.start()
 
 
 # cleanup function
 def exit():
-    pruner.stop()
     http.stop()
 
 

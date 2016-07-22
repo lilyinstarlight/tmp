@@ -26,7 +26,7 @@ class Interface(web.page.PageHandler, web.form.FormHandler):
         try:
             alias = self.request.body['alias']
             upload = self.request.body['file']
-        except KeyError, TypeError:
+        except (KeyError, TypeError):
             raise web.HTTPError(400)
 
         try:
