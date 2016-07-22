@@ -14,7 +14,6 @@ def get(alias):
 
     # get response
     response = conn.getresponse()
-    response.read()
 
     # check for 404
     if response.status == 404:
