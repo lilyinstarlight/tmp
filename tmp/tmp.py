@@ -39,7 +39,7 @@ def put(alias, upload):
         conn = http.client.HTTPConnection(config.store)
 
     # request given alias
-    conn.request('HEAD', config.store_endpoint + '/store/tmp/' + alias)
+    conn.request('HEAD', config.store_endpoint + 'store/tmp/' + alias)
 
     # get response
     response = conn.getresponse()
@@ -56,7 +56,7 @@ def put(alias, upload):
         method = 'POST'
 
     # make a metadata request
-    conn.request(method, config.store_endpoint + '/api/tmp/' + alias, headers={'Content-Type': 'application/json'}, body=json.dumps({'filename': upload['filename'], 'size': upload['length'], 'type': upload['type'], 'expire': time.time() + config.interval, 'locked': True}).encode('utf-8'))
+    conn.request(method, config.store_endpoint + 'api/tmp/' + alias, headers={'Content-Type': 'application/json'}, body=json.dumps({'filename': upload['filename'], 'size': upload['length'], 'type': upload['type'], 'expire': time.time() + config.interval, 'locked': True}).encode('utf-8'))
 
     # get response
     response = conn.getresponse()
@@ -69,7 +69,7 @@ def put(alias, upload):
         raise KeyError()
 
     # make a data request
-    conn.request('PUT', config.store_endpoint + '/store/tmp/' + data['alias'], body=upload['file'])
+    conn.request('PUT', config.store_endpoint + 'store/tmp/' + data['alias'], body=upload['file'])
 
     # get response
     response = conn.getresponse()
