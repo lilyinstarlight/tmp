@@ -53,7 +53,7 @@ def upload(stream, alias=None, filename='stream.txt'):
 	payload['type'] = 'text/plain'
 
 	if stream is not sys.stdin:
-		headers['filename'] = stream.name
+		payload['filename'] = stream.name
 
 	mime = mimetypes.guess_type(payload['filename'])[0]
 	if mime:
