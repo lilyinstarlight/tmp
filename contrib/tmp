@@ -26,7 +26,7 @@ class BadAliasError(Exception):
 class UnknownError(Exception):
 	pass
 
-def upload(stream, alias=None, filename='stream.txt'):
+def upload(stream, alias=None, filename=None):
 	if store_https:
 		conn = http.client.HTTPSConnection(store)
 	else:
@@ -52,8 +52,11 @@ def upload(stream, alias=None, filename='stream.txt'):
 	payload['filename'] = filename
 	payload['type'] = 'text/plain'
 
-	if stream is not sys.stdin:
-		payload['filename'] = stream.name
+	if payload['filename'] is None:
+		if stream is not sys.stdin:
+			payload['filename'] = stream.name
+		else:
+			payload['filename'] = 'stream.txt'
 
 	mime = mimetypes.guess_type(payload['filename'])[0]
 	if mime:
@@ -109,7 +112,7 @@ if __name__ == '__main__':
 
 	parser = ArgumentParser(description='upload files to the file drop service at {}'.format(service))
 	parser.add_argument('-a', '--alias', dest='alias', help='alias to upload files under (random if omitted)')
-	parser.add_argument('-f', '--filename', dest='filename', default='stream.txt', help='filename to use for upload (guessed if omitted)')
+	parser.add_argument('-f', '--filename', dest='filename', help='filename to use for upload (guessed if omitted)')
 	parser.add_argument('file', nargs='?', default=sys.stdin, type=FileType('rb'), help='file to upload (reads from stdin if omitted)')
 
 	args = parser.parse_args()
