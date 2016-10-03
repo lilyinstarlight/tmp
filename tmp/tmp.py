@@ -66,7 +66,7 @@ def put(alias, upload):
 
     # note bad requests
     if response.status != 201:
-        raise KeyError()
+        raise NameError()
 
     # make a data request
     conn.request('PUT', config.store_endpoint + 'store/tmp/' + data['alias'], body=upload['file'])
@@ -77,6 +77,6 @@ def put(alias, upload):
 
     # note bad requests
     if response.status != 204:
-        raise KeyError()
+        raise ValueError()
 
     return data['alias']
