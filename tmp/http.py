@@ -1,4 +1,3 @@
-import os
 import time
 
 import web, web.form, web.page
@@ -15,7 +14,7 @@ error_routes = {}
 
 
 class Interface(web.page.PageHandler, web.form.FormHandler):
-    directory = os.path.dirname(__file__) + '/html'
+    directory = config.template
     page = 'index.html'
     message = ''
 
@@ -44,7 +43,7 @@ class Interface(web.page.PageHandler, web.form.FormHandler):
 
 
 class ErrorInterface(web.page.PageErrorHandler):
-    directory = os.path.dirname(__file__) + '/html'
+    directory = config.template
     page = 'error.html'
 
 
