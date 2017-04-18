@@ -1,4 +1,6 @@
+import html
 import time
+import urllib.parse
 
 import web, web.form, web.page
 
@@ -31,7 +33,7 @@ class Interface(web.page.PageHandler, web.form.FormHandler):
         try:
             alias = tmp.put(alias, upload)
 
-            self.message = 'Successfully created at <a href="' + config.service + '/' + alias + '">' + config.service + '/' + alias + '</a>.'
+            self.message = 'Successfully created at <a href="' + config.service + '/' + urllib.parse.quote(alias) + '">' + config.service + '/' + html.escape(alias) + '</a>.'
         except KeyError:
             self.message = 'This alias already exists. Wait until it expires or choose another.'
         except NameError:
