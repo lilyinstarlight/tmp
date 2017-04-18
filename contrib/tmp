@@ -113,7 +113,7 @@ if __name__ == '__main__':
 	parser = ArgumentParser(description='upload files to the file drop service at {}'.format(service))
 	parser.add_argument('-a', '--alias', dest='alias', help='alias to upload files under (random if omitted)')
 	parser.add_argument('-f', '--filename', dest='filename', help='filename to use for upload (guessed if omitted)')
-	parser.add_argument('file', nargs='?', default=sys.stdin, type=FileType('rb'), help='file to upload (reads from stdin if omitted)')
+	parser.add_argument('file', nargs='?', default=sys.stdin.buffer, type=FileType('rb'), help='file to upload (reads from stdin if omitted)')
 
 	args = parser.parse_args()
 
