@@ -1,5 +1,9 @@
 import argparse
+import logging
 import signal
+import sys
+
+import fooster.web
 
 from tmp import config
 
@@ -25,20 +29,34 @@ if args.template:
 if args.log:
     if args.log == 'none':
         config.log = None
-        config.httplog = None
+        config.http_log = None
     else:
         config.log = args.log + '/tmp.log'
-        config.httplog = args.log + '/http.log'
+        config.http_log = args.log + '/http.log'
 
 if args.service:
     config.service = args.service
 
 
+# setup logging
+log = logging.getLogger('tmp')
+if config.log:
+    log.addHandler(logging.FileHandler(config.log))
+else:
+    log.addHandler(logging.StreamHandler(sys.stdout))
+
+if config.http_log:
+    http_log_handler = logging.FileHandler(config.http_log)
+    http_log_handler.setFormatter(fooster.web.HTTPLogFormatter())
+
+    logging.getLogger('http').addHandler(http_log_handler)
+
+
 from tmp import name, version
-from tmp import log, http
+from tmp import http
 
 
-log.tmplog.info(name + ' ' + version + ' starting...')
+log.info(name + ' ' + version + ' starting...')
 
 # start everything
 http.start()
@@ -52,3 +70,6 @@ def exit():
 # use the function for both SIGINT and SIGTERM
 for sig in signal.SIGINT, signal.SIGTERM:
     signal.signal(sig, exit)
+
+# join against the HTTP server
+http.join()

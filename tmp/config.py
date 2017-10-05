@@ -3,7 +3,7 @@ addr = ('', 8080)
 
 # log locations
 log = '/var/log/tmp/tmp.log'
-httplog = '/var/log/tmp/http.log'
+http_log = '/var/log/tmp/http.log'
 
 # template directory to use
 import os.path

@@ -2,9 +2,9 @@ import html
 import time
 import urllib.parse
 
-import web, web.form, web.page
+import fooster.web, fooster.web.form, fooster.web.page
 
-from tmp import config, log, tmp
+from tmp import config, tmp
 
 
 alias = '([a-zA-Z0-9._-]+)'
@@ -15,7 +15,7 @@ routes = {}
 error_routes = {}
 
 
-class Interface(web.page.PageHandler, web.form.FormHandler):
+class Interface(fooster.web.page.PageHandler, fooster.web.form.FormHandler):
     directory = config.template
     page = 'index.html'
     message = ''
@@ -28,7 +28,7 @@ class Interface(web.page.PageHandler, web.form.FormHandler):
             alias = self.request.body['alias']
             upload = self.request.body['file']
         except (KeyError, TypeError):
-            raise web.HTTPError(400)
+            raise fooster.web.HTTPError(400)
 
         try:
             alias = tmp.put(alias, upload)
@@ -44,19 +44,19 @@ class Interface(web.page.PageHandler, web.form.FormHandler):
         return self.do_get()
 
 
-class ErrorInterface(web.page.PageErrorHandler):
+class ErrorInterface(fooster.web.page.PageErrorHandler):
     directory = config.template
     page = 'error.html'
 
 
-class File(web.HTTPHandler):
+class File(fooster.web.HTTPHandler):
     def do_get(self):
         alias = self.groups[0]
 
         try:
             download = tmp.get(alias)
         except KeyError:
-            raise web.HTTPError(404)
+            raise fooster.web.HTTPError(404)
 
         # set headers
         self.response.headers['Content-Length'] = download['size']
@@ -70,13 +70,13 @@ class File(web.HTTPHandler):
 
 
 routes.update({'/': Interface, '/' + alias: File})
-error_routes.update(web.page.new_error(handler=ErrorInterface))
+error_routes.update(fooster.web.page.new_error(handler=ErrorInterface))
 
 
 def start():
     global http
 
-    http = web.HTTPServer(config.addr, routes, error_routes, log=log.httplog)
+    http = fooster.web.HTTPServer(config.addr, routes, error_routes)
     http.start()
 
 
@@ -85,3 +85,9 @@ def stop():
 
     http.stop()
     http = None
+
+
+def join():
+    global http
+
+    http.join()
