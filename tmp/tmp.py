@@ -69,7 +69,9 @@ def put(alias, upload):
     data = json.loads(response.read().decode('utf-8'))
 
     # note bad requests
-    if response.status != 201:
+    if response.status == 404:
+        raise NameError()
+    elif response.status != 201:
         raise ValueError()
 
     # make a data request
