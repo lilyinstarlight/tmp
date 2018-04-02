@@ -1,5 +1,4 @@
 import html
-import time
 import urllib.parse
 
 import fooster.web, fooster.web.form, fooster.web.page
@@ -34,6 +33,8 @@ class Interface(fooster.web.page.PageHandler, fooster.web.form.FormHandler):
             alias = tmp.put(alias, upload)
 
             self.message = 'Successfully created at <a href="' + config.service + '/' + urllib.parse.quote(alias) + '">' + config.service + '/' + html.escape(alias) + '</a>.'
+        except TypeError:
+            self.message = 'No file specified. Choose a file.'
         except KeyError:
             self.message = 'This alias already exists. Wait until it expires or choose another.'
         except NameError:
