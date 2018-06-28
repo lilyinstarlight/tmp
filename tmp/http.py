@@ -6,7 +6,7 @@ import fooster.web, fooster.web.form, fooster.web.page
 from tmp import config, tmp
 
 
-alias = '([a-zA-Z0-9._-]+)'
+alias = '(?P<alias>[a-zA-Z0-9._-]+)'
 
 http = None
 
@@ -52,7 +52,7 @@ class ErrorInterface(fooster.web.page.PageErrorHandler):
 
 class File(fooster.web.HTTPHandler):
     def do_get(self):
-        alias = self.groups[0]
+        alias = self.groups['alias']
 
         try:
             download = tmp.get(alias)
