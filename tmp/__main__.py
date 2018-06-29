@@ -1,4 +1,4 @@
-def main()
+def main():
     from tmp import main
 
 if __name__ == '__main__':
