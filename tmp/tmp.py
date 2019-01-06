@@ -1,4 +1,5 @@
 import json
+import os
 import time
 import http.client
 
@@ -62,7 +63,7 @@ def put(alias, upload):
         raise ValueError()
 
     # make a data request
-    conn.request('PUT', config.store_endpoint + 'store/tmp/' + data['alias'], body=upload['file'])
+    conn.request('PUT', config.store_endpoint + 'store/tmp/' + data['alias'], body=upload['file'], headers={'Content-Length': str(os.fstat(upload['file'].fileno()).st_size)})
 
     # get response
     response = conn.getresponse()
