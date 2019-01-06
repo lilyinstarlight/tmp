@@ -38,21 +38,6 @@ def put(alias, upload):
     else:
         conn = http.client.HTTPConnection(config.store)
 
-    # request given alias
-    conn.request('HEAD', config.store_endpoint + 'store/tmp/' + alias)
-
-    # get response
-    response = conn.getresponse()
-    response.read()
-
-    # check for existing alias
-    if response.status == 200:
-        raise KeyError()
-    elif response.status == 400:
-        raise NameError()
-    elif response.status != 404:
-        raise ValueError()
-
     # determine if this is a put or a post
     if alias:
         method = 'PUT'
@@ -68,8 +53,10 @@ def put(alias, upload):
     # load data response
     data = json.loads(response.read().decode('utf-8'))
 
-    # note bad requests
-    if response.status == 404:
+    # note bad requests - existing alias, bad name, and unknown error
+    if response.status == 403:
+        raise KeyError()
+    elif response.status == 404:
         raise NameError()
     elif response.status != 201:
         raise ValueError()
