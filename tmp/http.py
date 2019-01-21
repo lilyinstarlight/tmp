@@ -15,6 +15,8 @@ error_routes = {}
 
 
 class Interface(fooster.web.page.PageHandler, fooster.web.form.FormHandler):
+    nonatomic = True
+
     directory = config.template
     page = 'index.html'
     message = ''
