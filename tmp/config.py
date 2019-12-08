@@ -1,5 +1,5 @@
 # address to listen on
-addr = ('', 8080)
+addr = ('', 8000)
 
 # log locations
 log = '/var/log/tmp/tmp.log'
@@ -10,12 +10,10 @@ import os.path
 template = os.path.dirname(__file__) + '/html'
 
 # where service is located
-service = 'https://tmp.fooster.io'
+service = 'https://tmp.fooster.io/'
 
 # where store is located
-store = 'store.fooster.io'
-store_https = True
-store_endpoint = '/'
+store = 'https://store.fooster.io/'
 
 # interval for storing files
 interval = 604800  # 1 week

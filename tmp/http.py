@@ -1,4 +1,5 @@
 import html
+import re
 import urllib.parse
 
 import fooster.web, fooster.web.form, fooster.web.page
@@ -6,7 +7,7 @@ import fooster.web, fooster.web.form, fooster.web.page
 from tmp import config, tmp
 
 
-alias = '(?P<alias>[a-zA-Z0-9._-]+)'
+alias_regex = '(?P<alias>[a-zA-Z0-9._-]+)'
 
 http = None
 
@@ -35,9 +36,12 @@ class Interface(fooster.web.page.PageHandler, fooster.web.form.FormHandler):
             raise fooster.web.HTTPError(400)
 
         try:
+            if not re.fullmatch(alias_regex, alias):
+                raise NameError('alias ' + repr(alias) + ' invalid')
+
             alias = tmp.put(alias, upload)
 
-            self.message = 'Successfully created at <a href="' + config.service + '/' + urllib.parse.quote(alias) + '">' + config.service + '/' + html.escape(alias) + '</a>.'
+            self.message = 'Successfully created at <a href="' + config.service.rstrip('/') + '/' + urllib.parse.quote(alias) + '">' + config.service.rstrip('/') + '/' + html.escape(alias) + '</a>.'
         except TypeError:
             self.message = 'No file specified. Choose a file.'
         except KeyError:
@@ -78,7 +82,7 @@ class File(fooster.web.HTTPHandler):
         return 200, download['file']
 
 
-routes.update({'/': Interface, '/' + alias: File})
+routes.update({'/': Interface, '/' + alias_regex: File})
 error_routes.update(fooster.web.page.new_error(handler=ErrorInterface))
 
 
