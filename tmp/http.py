@@ -2,7 +2,9 @@ import html
 import re
 import urllib.parse
 
-import fooster.web, fooster.web.form, fooster.web.page
+import fooster.web
+import fooster.web.form
+import fooster.web.page
 
 from tmp import config, tmp
 
