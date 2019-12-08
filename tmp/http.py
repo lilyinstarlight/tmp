@@ -36,7 +36,7 @@ class Interface(fooster.web.page.PageHandler, fooster.web.form.FormHandler):
             raise fooster.web.HTTPError(400)
 
         try:
-            if not re.fullmatch(alias_regex, alias):
+            if alias and not re.fullmatch(alias_regex, alias):
                 raise NameError('alias ' + repr(alias) + ' invalid')
 
             alias = tmp.put(alias, upload)
@@ -67,6 +67,9 @@ class File(fooster.web.HTTPHandler):
             raise fooster.web.HTTPError(400)
 
         try:
+            if not re.fullmatch(alias_regex, alias):
+                raise KeyError(alias)
+
             download = tmp.get(alias)
         except KeyError:
             raise fooster.web.HTTPError(404)
