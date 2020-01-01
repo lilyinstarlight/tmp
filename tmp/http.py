@@ -17,7 +17,7 @@ routes = {}
 error_routes = {}
 
 
-class Interface(fooster.web.page.PageHandler, fooster.web.form.FormHandler):
+class Interface(fooster.web.form.FormMixIn, fooster.web.page.PageHandler):
     nonatomic = True
 
     directory = config.template
