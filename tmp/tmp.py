@@ -64,8 +64,10 @@ def put(alias, upload):
         raise KeyError(alias)
     elif response.status == 404:
         raise NameError('alias ' + repr(alias) + ' invalid')
+    elif response.status == 413:
+        raise ValueError('upload too large')
     elif response.status != 201:
-        raise ValueError('failed to make alias: ' + repr(alias))
+        raise RuntimeError('failed to make alias: ' + repr(alias))
 
     # make a data request
     conn.request('PUT', url.path.rstrip('/') + '/store/tmp/' + data['alias'], body=upload['file'], headers={'Content-Length': str(os.fstat(upload['file'].fileno()).st_size)})
@@ -76,6 +78,6 @@ def put(alias, upload):
 
     # note bad requests
     if response.status != 204:
-        raise ValueError('failed to make alias: ' + repr(alias))
+        raise RuntimeError('failed to make alias: ' + repr(alias))
 
     return data['alias']

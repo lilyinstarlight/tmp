@@ -9,6 +9,9 @@ import fooster.web.page
 from tmp import config, tmp
 
 
+fooster.web.form.max_file_size = config.max_size
+
+
 alias_regex = '(?P<alias>[a-zA-Z0-9._-]+)'
 
 http = None
@@ -26,6 +29,16 @@ class Interface(fooster.web.form.FormMixIn, fooster.web.page.PageHandler):
 
     def format(self, page):
         return page.format(message=self.message)
+
+    def respond(self):
+        try:
+            return super().respond()
+        except fooster.web.HTTPError as err:
+            if err.code == 413:
+                self.message = 'Upload is too large.'
+                return super().do_get()
+
+            raise
 
     def do_post(self):
         try:
@@ -51,6 +64,8 @@ class Interface(fooster.web.form.FormMixIn, fooster.web.page.PageHandler):
         except NameError:
             self.message = 'This alias is not valid. Choose one made up of alphanumeric characters only.'
         except ValueError:
+            self.message = 'Upload is too large.'
+        except RuntimeError:
             self.message = 'Could not upload data for some reason. Perhaps you should try again.'
 
         return self.do_get()

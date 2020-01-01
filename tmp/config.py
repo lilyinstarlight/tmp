@@ -17,3 +17,6 @@ store = 'https://store.fooster.io/'
 
 # interval for storing files
 interval = 604800  # 1 week
+
+# maximum file size
+max_size = 33554432 # 32 MB
