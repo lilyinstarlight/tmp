@@ -3,8 +3,7 @@ import html.parser
 import mimetypes
 import sys
 
-import requests
-import requests_toolbelt.multipart.encoder
+import httpx
 
 
 service = 'https://tmp.fooster.io/'
@@ -61,8 +60,8 @@ class MessageParser(html.parser.HTMLParser):
 def upload(stream, alias=None, filename=None):
     parser = MessageParser()
 
-    resp = requests.post(service, files={
-        'file': stream,
+    resp = httpx.post(service, files={
+        'file': (None, stream),
         'alias': (None, alias if alias is not None else ''),
     })
 
