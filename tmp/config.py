@@ -10,10 +10,10 @@ import os.path
 template = os.path.dirname(__file__) + '/html'
 
 # where service is located
-service = 'https://tmp.fooster.io/'
+service = 'https://tmp.lily.flowers'
 
 # where store is located
-store = 'https://store.fooster.io/'
+store = 'https://store.lily.flowers'
 
 # interval for storing files
 interval = 604800  # 1 week
