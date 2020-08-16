@@ -1,2 +1,2 @@
 name = 'tmp'
-version = '0.1b3'
+version = '0.1b4'
