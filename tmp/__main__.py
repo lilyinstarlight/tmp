@@ -1,9 +1,6 @@
 import argparse
 import logging
 import signal
-import sys
-
-import fooster.web
 
 from tmp import config
 
@@ -46,33 +43,23 @@ def main():
     if args.service:
         config.service = args.service
 
-
-    # setup logging
-    log = logging.getLogger('tmp')
-    if config.log:
-        log.addHandler(logging.FileHandler(config.log))
-    else:
-        log.addHandler(logging.StreamHandler(sys.stdout))
-
-    if config.http_log:
-        http_log_handler = logging.FileHandler(config.http_log)
-        http_log_handler.setFormatter(fooster.web.HTTPLogFormatter())
-
-        logging.getLogger('http').addHandler(http_log_handler)
+    config._apply()
 
 
-    from tmp import name, version
+    from tmp import __version__
     from tmp import http
 
 
-    log.info(name + ' ' + version + ' starting...')
+    log = logging.getLogger('tmp')
+
+    log.info('tmp ' + __version__ + ' starting...')
 
     # start everything
     http.start()
 
 
     # cleanup function
-    def exit(signum, siginfo):
+    def exit(signum, frame):
         http.stop()
 
 

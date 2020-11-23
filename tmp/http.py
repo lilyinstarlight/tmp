@@ -21,7 +21,7 @@ error_routes = {}
 
 
 class Interface(fooster.web.form.FormMixIn, fooster.web.page.PageHandler):
-    nonatomic = True
+    reader = True
 
     directory = config.template
     page = 'index.html'
