@@ -59,8 +59,14 @@ class MessageParser(html.parser.HTMLParser):
 def upload(stream, alias=None, filename=None):
     parser = MessageParser()
 
+    if filename is None:
+        if stream is not sys.stdin.buffer:
+            filename = stream.name
+        else:
+            filename = 'Unnamed'
+
     resp = httpx.post(service, files={
-        'file': (None, stream),
+        'file': (filename, stream),
         'alias': (None, alias.encode('utf-8') if alias is not None else b''),
     })
 
