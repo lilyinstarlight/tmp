@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import html.parser
-import mimetypes
 import sys
 
 import httpx
@@ -62,7 +61,7 @@ def upload(stream, alias=None, filename=None):
 
     resp = httpx.post(service, files={
         'file': (None, stream),
-        'alias': (None, alias if alias is not None else ''),
+        'alias': (None, alias.encode('utf-8') if alias is not None else b''),
     })
 
     if resp.status_code == 413:
@@ -83,8 +82,6 @@ def upload(stream, alias=None, filename=None):
 
 
 if __name__ == '__main__':
-    import sys
-
     from argparse import ArgumentParser, FileType
 
     parser = ArgumentParser(description='upload files to the file drop service at {}'.format(service))
